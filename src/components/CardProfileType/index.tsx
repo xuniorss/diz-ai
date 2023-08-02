@@ -30,11 +30,15 @@ export const CardProfileType = ({
 	description = '',
 	type = 'WORKER',
 	knowMore = '',
+	...rest
 }: CardProfileProps) => {
 	const onClick = useCallback(() => {}, [])
 
 	return (
-		<Card className="flex h-full w-full max-w-sm flex-col shadow-lg hover:shadow-xl">
+		<Card
+			className="flex h-full w-full max-w-sm flex-col shadow-lg hover:shadow-xl"
+			{...rest}
+		>
 			<CardHeader>
 				<CardTitle>{title}</CardTitle>
 				<CardDescription className="break-words leading-relaxed">

@@ -2,6 +2,7 @@ import { SYSTEM_NAME } from '@/system'
 
 import type { Metadata } from 'next'
 import { ReactNode } from 'react'
+import { FooterPublic } from './components/Footer'
 import { NavbarPublic } from './components/Navbar'
 
 export const metadata: Metadata = {
@@ -14,6 +15,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
 		<div className="h-full">
 			<NavbarPublic />
 			<main className="h-full pt-16">{children}</main>
+			<FooterPublic />
 		</div>
 	)
 }
