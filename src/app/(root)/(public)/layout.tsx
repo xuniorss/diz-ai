@@ -4,7 +4,7 @@ import { ReactNode } from 'react'
 
 export const metadata: Metadata = {
 	title: `${SYSTEM_NAME} - Bem-vindo(a)`,
-	description: 'Lugar onde o seu funcionário tem voz',
+	description: 'Lugar onde o seu funcionário tem voz.',
 }
 
 export default function PublicLayout({ children }: { children: ReactNode }) {
