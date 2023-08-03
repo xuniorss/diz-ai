@@ -13,7 +13,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<ClerkProvider>
 			<html lang="pt-BR" suppressHydrationWarning>
-				<body className={cn('bg-secondary antialiased', inter.className)}>
+				<body
+					className={cn(
+						'bg-secondary antialiased scrollbar-thin scrollbar-track-secondary scrollbar-thumb-secondary-foreground scrollbar-thumb-rounded',
+						inter.className,
+					)}
+				>
 					<Providers>{children}</Providers>
 				</body>
 			</html>

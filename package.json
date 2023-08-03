@@ -11,6 +11,7 @@
   "dependencies": {
     "@clerk/nextjs": "^4.23.1",
     "@hookform/resolvers": "^3.1.1",
+    "@prisma/client": "^5.1.1",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-dropdown-menu": "^2.0.5",
     "@radix-ui/react-label": "^2.0.2",
@@ -20,6 +21,7 @@
     "@types/react": "18.2.18",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.14",
+    "axios": "^1.4.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "eslint": "8.46.0",
@@ -28,6 +30,7 @@
     "next": "13.4.12",
     "next-themes": "^0.2.1",
     "postcss": "8.4.27",
+    "prisma": "^5.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.2",
@@ -45,6 +48,7 @@
   "devDependencies": {
     "@types/redux-logger": "^3.0.9",
     "prettier": "^3.0.0",
-    "prettier-plugin-tailwindcss": "^0.4.1"
+    "prettier-plugin-tailwindcss": "^0.4.1",
+    "tailwind-scrollbar": "^3.0.4"
   }
 }

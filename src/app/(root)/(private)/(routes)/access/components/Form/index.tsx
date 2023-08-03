@@ -12,73 +12,68 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useStoreUser } from '@/hooks/useStoreUser'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useCallback } from 'react'
 import {
-	FormProvider,
-	SubmitHandler,
-	useForm,
-	UseFormReturn,
-} from 'react-hook-form'
-import { z } from 'zod'
-
-const cnpjRegex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/
-
-const FormRhSchema = z.object({
-	companyName: z
-		.string()
-		.min(1, { message: 'O nome da empresa é obrigatório.' }),
-	cnpj: z
-		.string()
-		.min(1, { message: 'CNPJ da empresa é obrigatório.' })
-		.max(25)
-		.refine((value) => cnpjRegex.test(value), { message: 'CNPJ inválido' }),
-	rhname: z.string().min(1, { message: 'Informe seu nome.' }),
-})
-
-const FormWorkerSchema = z.object({
-	key: z.string().min(1, { message: 'A chave de acesso é obrigatória.' }),
-	workername: z.string().min(1, { message: 'Informe seu nome.' }),
-})
-
-type FormRhProps = z.infer<typeof FormRhSchema>
-type FormWorkerProps = z.infer<typeof FormWorkerSchema>
+	FormRhProps,
+	FormRhSchema,
+	FormWorkerProps,
+	FormWorkerSchema,
+} from '@/models/forms/authform'
+import { setTypeProfile } from '@/redux/user/slice'
+import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
+import { useCallback, useMemo } from 'react'
+import { SubmitHandler, UseFormReturn, useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
 
 export const RootForm = () => {
 	const { typeProfile } = useStoreUser()
+	const router = useRouter()
+	const dispatch = useDispatch()
 
 	const formRh = useForm<FormRhProps>({
 		resolver: zodResolver(FormRhSchema),
 		reValidateMode: 'onChange',
 		mode: 'all',
-		defaultValues: { companyName: '' },
+		defaultValues: { companyName: '', cnpj: '', name: '' },
 	})
 
 	const formWorker = useForm<FormWorkerProps>({
 		resolver: zodResolver(FormWorkerSchema),
 		reValidateMode: 'onChange',
 		mode: 'all',
-		defaultValues: { key: '' },
+		defaultValues: { key: '', name: '' },
 	})
 
 	const form = (
 		typeProfile === 'RH' ? { ...formRh } : { ...formWorker }
 	) as UseFormReturn<FormRhProps | FormWorkerProps>
 
+	const isLoading = useMemo(
+		() => form.formState.isSubmitting,
+		[form.formState.isSubmitting],
+	)
+
 	const onSubmit: SubmitHandler<FormRhProps | FormWorkerProps> = useCallback(
-		(data) => {
+		async (data) => {
 			try {
-				console.log(data)
+				if (typeProfile === 'RH') await axios.post('/api/user/rh', data)
+				else await axios.post('/api/user/worker', data)
+
+				router.refresh()
+				router.push('/home')
+
+				dispatch(setTypeProfile(null))
 			} catch (error) {
 				console.error(error)
 			}
 		},
-		[],
+		[dispatch, router, typeProfile],
 	)
 
 	return (
-		<FormProvider {...form}>
-			<Form {...form}>
+		<Form {...form}>
+			{typeProfile && (
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
 					className="flex h-full w-full flex-col space-y-7"
@@ -101,6 +96,7 @@ export const RootForm = () => {
 													? 'Ex: Americanas'
 													: 'Chave de acesso'
 											}
+											disabled={isLoading}
 											{...field}
 										/>
 									</FormControl>
@@ -125,6 +121,7 @@ export const RootForm = () => {
 											<Input
 												placeholder="Ex: 56.473.883/0001-01"
 												maxLength={18}
+												disabled={isLoading}
 												{...field}
 											/>
 										</FormControl>
@@ -136,12 +133,13 @@ export const RootForm = () => {
 
 						<FormField
 							control={form.control}
-							name={typeProfile === 'RH' ? 'rhname' : 'workername'}
+							name="name"
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Seu nome</FormLabel>
 									<FormControl>
 										<Input
+											disabled={isLoading}
 											placeholder="Informe seu nome"
 											{...field}
 										/>
@@ -153,12 +151,12 @@ export const RootForm = () => {
 					</section>
 
 					<section className="flex w-full justify-end gap-x-4">
-						<Button type="submit" size="sm">
+						<Button disabled={isLoading} type="submit" size="sm">
 							Registrar-se
 						</Button>
 					</section>
 				</form>
-			</Form>
-		</FormProvider>
+			)}
+		</Form>
 	)
 }

@@ -1,5 +1,7 @@
 import { ModeToggle } from '@/components/ModeToggle'
+import { buttonVariants } from '@/components/ui/button'
 import { SYSTEM_NAME } from '@/system'
+import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
 export const NavbarPublic = () => {
@@ -13,8 +15,16 @@ export const NavbarPublic = () => {
 						</h1>
 					</Link>
 				</section>
-				<section className="flex items-center">
+				<section className="flex items-center gap-x-3">
 					<ModeToggle />
+					<Link
+						aria-label="go to log in"
+						href="/sign-in"
+						className={buttonVariants({ variant: 'default', size: 'sm' })}
+					>
+						Já tenho conta
+						<ArrowRight className="ml-1 h-4 w-4" />
+					</Link>
 				</section>
 			</div>
 		</header>
