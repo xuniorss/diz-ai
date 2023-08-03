@@ -1,7 +1,9 @@
 'use client'
 
+import { setTypeProfile } from '@/redux/user/slice'
 import Link from 'next/link'
 import { ComponentProps, useCallback } from 'react'
+import { useDispatch } from 'react-redux'
 import {
 	Accordion,
 	AccordionContent,
@@ -32,7 +34,11 @@ export const CardProfileType = ({
 	knowMore = '',
 	...rest
 }: CardProfileProps) => {
-	const onClick = useCallback(() => {}, [])
+	const dispatch = useDispatch()
+
+	const onClick = useCallback(() => {
+		dispatch(setTypeProfile(type))
+	}, [dispatch, type])
 
 	return (
 		<Card

@@ -1,8 +1,9 @@
-import { ThemeProvider } from '@/components/theme-provider'
 import { cn } from '@/lib/utils'
 import { ClerkProvider } from '@clerk/nextjs'
 import { Inter } from 'next/font/google'
 import { ReactNode } from 'react'
+
+import { Providers } from './provider'
 
 import './globals.css'
 
@@ -13,13 +14,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 		<ClerkProvider>
 			<html lang="pt-BR" suppressHydrationWarning>
 				<body className={cn('bg-secondary antialiased', inter.className)}>
-					<ThemeProvider
-						attribute="class"
-						defaultTheme="system"
-						enableSystem
-					>
-						{children}
-					</ThemeProvider>
+					<Providers>{children}</Providers>
 				</body>
 			</html>
 		</ClerkProvider>
