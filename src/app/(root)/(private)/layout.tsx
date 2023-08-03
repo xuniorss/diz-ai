@@ -6,5 +6,9 @@ export default function PrivateLayout({ children }: { children: ReactNode }) {
 
 	if (!userId) return redirectToSignIn()
 
-	return <div className="h-full">{children}</div>
+	return (
+		<div className="h-full">
+			<main className="mx-auto h-full px-4">{children}</main>
+		</div>
+	)
 }
