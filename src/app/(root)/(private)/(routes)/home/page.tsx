@@ -1,7 +1,6 @@
 'use client'
 
 import { getUserFetch } from '@/redux/user/slice'
-import { UserButton } from '@clerk/nextjs'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
@@ -12,9 +11,5 @@ export default function HomePage() {
 		dispatch(getUserFetch())
 	}, [dispatch])
 
-	return (
-		<div>
-			<UserButton afterSignOutUrl="/" />
-		</div>
-	)
+	return <div></div>
 }

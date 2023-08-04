@@ -1,5 +1,14 @@
+import { Navbar } from '@/components/Navbar'
+import { Sidebar } from '@/components/Sidebar'
+import { SYSTEM_NAME } from '@/system'
 import { auth, redirectToSignIn } from '@clerk/nextjs'
+import type { Metadata } from 'next'
 import { ReactNode } from 'react'
+
+export const metadata: Metadata = {
+	title: SYSTEM_NAME,
+	description: 'Lugar onde o seu funcionário tem voz.',
+}
 
 export default function PrivateLayout({ children }: { children: ReactNode }) {
 	const { userId } = auth()
@@ -8,7 +17,11 @@ export default function PrivateLayout({ children }: { children: ReactNode }) {
 
 	return (
 		<div className="h-full">
-			<main className="mx-auto h-full px-4">{children}</main>
+			<Navbar />
+			<div className="fixed inset-y-0 mt-16 hidden w-28 flex-col md:flex">
+				<Sidebar />
+			</div>
+			<main className="h-full pt-16 md:pl-28">{children}</main>
 		</div>
 	)
 }
