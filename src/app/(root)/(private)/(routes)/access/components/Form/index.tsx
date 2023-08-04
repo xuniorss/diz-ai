@@ -18,7 +18,7 @@ import {
 	FormWorkerProps,
 	FormWorkerSchema,
 } from '@/models/forms/authform'
-import { setTypeProfile } from '@/redux/user/slice'
+import { getUserFetch, setTypeProfile } from '@/redux/user/slice'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
@@ -64,6 +64,7 @@ export const RootForm = () => {
 				router.push('/home')
 
 				dispatch(setTypeProfile(null))
+				dispatch(getUserFetch())
 			} catch (error) {
 				console.error(error)
 			}
