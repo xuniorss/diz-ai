@@ -21,7 +21,7 @@ export default function PrivateLayout({ children }: { children: ReactNode }) {
 			<div className="fixed inset-y-0 mt-16 hidden w-28 flex-col md:flex">
 				<Sidebar />
 			</div>
-			<main className="h-full pt-16 md:pl-28">{children}</main>
+			<main className="h-full px-6 pt-16 md:px-3 md:pl-28">{children}</main>
 		</div>
 	)
 }

@@ -22,12 +22,14 @@ export const POST = async (req: Request) => {
 			return new NextResponse('Company not found', { status: 404 })
 
 		// * Generate key for 10 minutes * //
-		await prismadb.companyKeys.create({
+		const keys = await prismadb.companyKeys.create({
 			data: {
 				companyId: company.id,
 				expirationTime: new Date(Date.now() + 10 * 60 * 1000),
 			},
 		})
+
+		return NextResponse.json(keys)
 	} catch (error) {
 		console.error('[KEY_POST]', error)
 		return new NextResponse('Internal Server Error', { status: 500 })
@@ -74,6 +76,19 @@ export const DELETE = async (req: Request) => {
 		return NextResponse.json(expiredKeys)
 	} catch (error) {
 		console.error('[KEY_DELETE]', error)
+		return new NextResponse('Internal Server Error', { status: 500 })
+	}
+}
+
+export const GET = async (req: Request) => {
+	try {
+		const keys = await prismadb.companyKeys.findMany({
+			where: { expirationTime: { gt: new Date() }, used: false },
+		})
+
+		return NextResponse.json(keys)
+	} catch (error) {
+		console.error('[KEY_GET]', error)
 		return new NextResponse('Internal Server Error', { status: 500 })
 	}
 }

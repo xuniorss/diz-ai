@@ -1,9 +1,5 @@
 import { Company, User } from '@prisma/client'
 
-interface UserRhProps extends User {
+export interface UserResponse extends User {
 	company: Company[]
-}
-
-export type UserResponse = {
-	data: UserRhProps | User | null
 }

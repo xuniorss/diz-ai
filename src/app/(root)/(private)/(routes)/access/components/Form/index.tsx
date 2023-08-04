@@ -95,7 +95,7 @@ export const RootForm = () => {
 											placeholder={
 												typeProfile === 'RH'
 													? 'Ex: Americanas'
-													: 'Chave de acesso'
+													: 'Ex: f2122981-2057-4333-87cf-76491660d009'
 											}
 											disabled={isLoading}
 											{...field}
