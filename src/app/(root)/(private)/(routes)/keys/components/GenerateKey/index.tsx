@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { useStoreKeys } from '@/hooks/useStoreKeys'
 import { getKeysFetch, postKeysFetch } from '@/redux/keys/slice'
-import { Plus } from 'lucide-react'
+import { AlertCircle, Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -33,9 +33,15 @@ export const GenerateKey = () => {
 				disabled={isFetching}
 				onClick={handleGenerate}
 			>
-				<Plus className="mr-2 h-4 w-4" />
-				Gerar nova chave
+				<Plus className="mr-0 h-4 w-4 md:mr-2" />
+				<span className="hidden md:block">Gerar nova chave</span>
 			</Button>
+			<span className="flex items-center">
+				<AlertCircle className="ml-4 mr-1 hidden h-4 w-4 md:block" />
+				<p className="ml-4 text-center md:ml-0">
+					Se as chaves não aparecerem abaixo, recarrege a página.
+				</p>
+			</span>
 		</div>
 	)
 }
