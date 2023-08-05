@@ -15,5 +15,5 @@ export const useStoreKeys = (companyId?: string) => {
 		return keys.filter((key) => key.companyId === companyId)
 	}, [companyId, keys])
 
-	return { isFetching, companyKeys }
+	return { isFetching, companyKeys, keys }
 }

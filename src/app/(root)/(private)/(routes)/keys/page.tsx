@@ -32,7 +32,7 @@ export default function KeysPage() {
 
 				<Separator className="bg-primary/30" />
 
-				<section>
+				<section className="space-y-4">
 					<h2 className="text-sm md:text-base">
 						Chaves ativas ou que ainda não foram usadas.
 					</h2>

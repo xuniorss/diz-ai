@@ -2,7 +2,11 @@
 
 import { Button } from '@/components/ui/button'
 import { useStoreKeys } from '@/hooks/useStoreKeys'
-import { getKeysFetch, postKeysFetch } from '@/redux/keys/slice'
+import {
+	deleteKeysFetch,
+	getKeysFetch,
+	postKeysFetch,
+} from '@/redux/keys/slice'
 import { AlertCircle, Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
@@ -20,6 +24,7 @@ export const GenerateKey = () => {
 	const handleGenerate = useCallback(() => {
 		dispatch(postKeysFetch())
 		dispatch(getKeysFetch())
+		dispatch(deleteKeysFetch())
 
 		router.refresh()
 	}, [dispatch, router])

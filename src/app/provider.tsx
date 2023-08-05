@@ -1,6 +1,7 @@
 'use client'
 
 import { ThemeProvider } from '@/components/theme-provider'
+import { Toaster } from '@/components/ui/toaster'
 import { persistor, store } from '@/redux/store'
 import { ReactNode } from 'react'
 import { Provider } from 'react-redux'
@@ -12,6 +13,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
 			<PersistGate loading={null} persistor={persistor}>
 				<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
 					{children}
+					<Toaster />
 				</ThemeProvider>
 			</PersistGate>
 		</Provider>

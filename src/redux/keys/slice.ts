@@ -1,5 +1,5 @@
 import { KeysProps } from '@/models/keys'
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface KeysState {
 	keys: KeysProps[] | null
@@ -34,6 +34,15 @@ const keysSlice = createSlice({
 		getKeysFailure: (state) => {
 			state.isLoading = false
 		},
+		deleteKeysFetch: (state) => {
+			state.isLoading = true
+		},
+		deleteKeysSuccess: (state) => {
+			state.isLoading = false
+		},
+		deleteKeysFailure: (state) => {
+			state.isLoading = false
+		},
 	},
 })
 
@@ -44,6 +53,9 @@ export const {
 	getKeysFetch,
 	getKeysSuccess,
 	getKeysFailure,
+	deleteKeysFetch,
+	deleteKeysSuccess,
+	deleteKeysFailure,
 } = keysSlice.actions
 
 export default keysSlice.reducer
