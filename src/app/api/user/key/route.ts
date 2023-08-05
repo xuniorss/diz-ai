@@ -60,7 +60,7 @@ export const DELETE = async (req: Request) => {
 		const expiredKeys = await prismadb.companyKeys.findMany({
 			where: {
 				companyId: company.id,
-				expirationTime: { lte: tenMinutesAgo },
+				OR: [{ expirationTime: { lte: tenMinutesAgo } }, { used: true }],
 			},
 		})
 
