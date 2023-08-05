@@ -1,5 +1,5 @@
 import { RoutesProps } from '@/models/navigation'
-import { Home, Inbox, Key, Users } from 'lucide-react'
+import { Home, Inbox, Key, MailPlus, Users } from 'lucide-react'
 
 export const rhRoutes: RoutesProps[] = [
 	{ icon: Home, href: '/home', label: 'Início' },
@@ -10,4 +10,5 @@ export const rhRoutes: RoutesProps[] = [
 
 export const workRoutes: RoutesProps[] = [
 	{ icon: Home, href: '/home', label: 'Início' },
+	{ icon: MailPlus, href: '/register', label: 'Registrar' },
 ]

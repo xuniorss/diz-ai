@@ -69,3 +69,11 @@ model CompanyWorkers {
   @@index([companyId])
   @@index([userId])
 }
+
+model OccurrenciesTypes {
+  id   String @id @default(uuid())
+  name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
