@@ -24,6 +24,8 @@ export const Sidebar = () => {
 		[user?.isRh],
 	)
 
+	if (pathname === '/access') return null
+
 	return (
 		<aside className="flex h-full flex-col space-y-4 bg-secondary text-primary">
 			<section className="felx flex-1 justify-center p-3">

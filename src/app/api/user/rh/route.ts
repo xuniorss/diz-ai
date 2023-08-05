@@ -29,7 +29,7 @@ export const POST = async (req: Request) => {
 			prismadb.company.create({ data: { companyName, cnpj, userId } }),
 		])
 
-		return NextResponse.json({ ...rhUser, ...rhCompany }, { status: 200 })
+		return NextResponse.json({ ...rhUser, ...rhCompany }, { status: 201 })
 	} catch (error) {
 		console.error('[RH_POST]', error)
 		return new NextResponse('Internal Server Error', { status: 500 })

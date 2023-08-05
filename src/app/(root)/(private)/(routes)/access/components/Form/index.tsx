@@ -11,6 +11,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { useToast } from '@/components/ui/use-toast'
 import { useStoreUser } from '@/hooks/useStoreUser'
 import {
 	FormRhProps,
@@ -20,7 +21,7 @@ import {
 } from '@/models/forms/authform'
 import { getUserFetch, setTypeProfile } from '@/redux/user/slice'
 import { zodResolver } from '@hookform/resolvers/zod'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import { useCallback, useMemo } from 'react'
 import { SubmitHandler, UseFormReturn, useForm } from 'react-hook-form'
@@ -30,6 +31,7 @@ export const RootForm = () => {
 	const { typeProfile } = useStoreUser()
 	const router = useRouter()
 	const dispatch = useDispatch()
+	const { toast } = useToast()
 
 	const formRh = useForm<FormRhProps>({
 		resolver: zodResolver(FormRhSchema),
@@ -60,16 +62,34 @@ export const RootForm = () => {
 				if (typeProfile === 'RH') await axios.post('/api/user/rh', data)
 				else await axios.post('/api/user/worker', data)
 
-				router.refresh()
 				router.push('/home')
+				router.refresh()
 
 				dispatch(setTypeProfile(null))
 				dispatch(getUserFetch())
+
+				toast({ description: 'Sua conta foi criada.' })
 			} catch (error) {
+				if (axios.isAxiosError(error)) {
+					const axiosError = error as AxiosError
+					let errorCode = axiosError.response?.status
+
+					if (errorCode === 409) {
+						toast({
+							description: 'Chave de acesso já utilizada.',
+							variant: 'destructive',
+						})
+					} else if (errorCode === 403) {
+						toast({
+							description: 'Chave de acesso expirada.',
+							variant: 'destructive',
+						})
+					}
+				}
 				console.error(error)
 			}
 		},
-		[dispatch, router, typeProfile],
+		[dispatch, router, toast, typeProfile],
 	)
 
 	return (
