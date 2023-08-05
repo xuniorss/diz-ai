@@ -4,11 +4,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 interface KeysState {
 	keys: KeysProps[] | null
 	isLoading: boolean
+	keyId: string | null
 }
 
 const initialState: KeysState = {
 	keys: null,
 	isLoading: false,
+	keyId: null,
 }
 
 const keysSlice = createSlice({
@@ -43,6 +45,23 @@ const keysSlice = createSlice({
 		deleteKeysFailure: (state) => {
 			state.isLoading = false
 		},
+		deleteSingleKeyFetch: (state, action: PayloadAction<string>) => {
+			state.keyId = action.payload
+			state.isLoading = true
+		},
+		deleteSingleKeySuccess: (state) => {
+			const keysUpdated = state.keys?.filter(
+				(key) => key.id !== state.keyId,
+			) as KeysProps[]
+
+			state.keys = [...keysUpdated]
+			state.keyId = null
+			state.isLoading = false
+		},
+		deleteSingleKeyFailure: (state) => {
+			state.keyId = null
+			state.isLoading = false
+		},
 	},
 })
 
@@ -56,6 +75,9 @@ export const {
 	deleteKeysFetch,
 	deleteKeysSuccess,
 	deleteKeysFailure,
+	deleteSingleKeyFetch,
+	deleteSingleKeySuccess,
+	deleteSingleKeyFailure,
 } = keysSlice.actions
 
 export default keysSlice.reducer

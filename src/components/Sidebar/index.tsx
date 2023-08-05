@@ -1,19 +1,27 @@
 'use client'
 
-import { routes } from '@/constants/navigation'
+import { rhRoutes, workRoutes } from '@/constants/navigation'
+import { useStoreUser } from '@/hooks/useStoreUser'
 import { cn } from '@/lib/utils'
 import { usePathname, useRouter } from 'next/navigation'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 
 export const Sidebar = () => {
 	const pathname = usePathname()
 	const router = useRouter()
+
+	const { user } = useStoreUser()
 
 	const onNavigate = useCallback(
 		(url: string) => {
 			return router.push(url)
 		},
 		[router],
+	)
+
+	const routes = useMemo(
+		() => (user?.isRh ? rhRoutes : workRoutes),
+		[user?.isRh],
 	)
 
 	return (
