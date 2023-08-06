@@ -15,13 +15,14 @@ model User {
   userId String  @id
   isRh   Boolean @default(false)
   name   String
-  email  String
+  email  String  @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   company        Company[]
   companyworkers CompanyWorkers[]
+  Occurrencies   Occurrencies[]
 }
 
 model Company {
@@ -37,6 +38,7 @@ model Company {
 
   companykeys    CompanyKeys[]
   companyworkers CompanyWorkers[]
+  Occurrencies   Occurrencies[]
 
   @@index([userId])
 }
@@ -76,4 +78,26 @@ model OccurrenciesTypes {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  Occurrencies Occurrencies[]
+}
+
+model Occurrencies {
+  id               String  @id @default(uuid())
+  email            String?
+  userId           String
+  companyId        String
+  message          String  @db.Text
+  occurrenceTypeId String
+
+  occurrenciesTypes OccurrenciesTypes @relation(fields: [occurrenceTypeId], references: [id], onDelete: Cascade)
+  user              User              @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  company           Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([occurrenceTypeId])
+  @@index([userId])
+  @@index([companyId])
 }

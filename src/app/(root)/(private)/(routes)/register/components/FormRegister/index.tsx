@@ -20,6 +20,8 @@ import {
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
+import { ToastAction } from '@/components/ui/toast'
+import { useToast } from '@/components/ui/use-toast'
 import { useStoreOccurrence } from '@/hooks/useStoreOccurrence'
 import { useStoreUser } from '@/hooks/useStoreUser'
 import {
@@ -28,33 +30,72 @@ import {
 } from '@/models/forms/occurrence-form'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
 import { Send } from 'lucide-react'
-import { useCallback, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useCallback, useMemo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 export const FormRegister = () => {
 	const [enable, setEnable] = useState(false)
+	const { toast } = useToast()
+	const router = useRouter()
 
 	const { user } = useStoreUser()
-	const { isLoading, occurrencies } = useStoreOccurrence()
+	const { occurrencies } = useStoreOccurrence()
 
 	const form = useForm<OccurrenceProps>({
 		resolver: zodResolver(OccurrenceSchema),
-		defaultValues: { ocurrenceTypeId: undefined, message: '' },
+		defaultValues: { occurrenceTypeId: undefined, message: '' },
 	})
 
+	const isSubmitting = useMemo(
+		() => form.formState.isSubmitting,
+		[form.formState.isSubmitting],
+	)
+
+	const handleCancelSendMessage = useCallback((occurrenceId: string) => {
+		console.log(occurrenceId)
+	}, [])
+
 	const onSubmit: SubmitHandler<OccurrenceProps> = useCallback(
-		(values) => {
+		async (values) => {
 			try {
 				let data = {
 					email: enable ? user?.email : null,
 					...values,
 				}
+
+				const { data: response } = await axios.post(
+					'/api/user/worker/occurrencies',
+					data,
+				)
+
+				form.reset()
+				router.refresh()
+				setEnable(false)
+
+				console.log(response)
+
+				toast({
+					title: 'Ocorrência registrada.',
+					duration: 8000,
+					description:
+						'Caso queira cancelar o envio, clique no botão ao lado.',
+					action: (
+						<ToastAction
+							onClick={() => handleCancelSendMessage(response.id)}
+							altText="Desfazer envio"
+						>
+							Desfazer envio
+						</ToastAction>
+					),
+				})
 			} catch (error) {
 				console.error(error)
 			}
 		},
-		[enable, user?.email],
+		[enable, form, handleCancelSendMessage, router, toast, user?.email],
 	)
 
 	return (
@@ -65,6 +106,7 @@ export const FormRegister = () => {
 						aria-label="enable/disable visibility"
 						id="enable-identification"
 						checked={enable}
+						disabled={isSubmitting}
 						onCheckedChange={() => setEnable((prevState) => !prevState)}
 					/>
 					<Label
@@ -81,12 +123,12 @@ export const FormRegister = () => {
 				<Form {...form}>
 					<FormField
 						control={form.control}
-						name="ocurrenceTypeId"
+						name="occurrenceTypeId"
 						render={({ field }) => (
 							<FormItem>
 								<FormLabel>Classifique sua ocorrência</FormLabel>
 								<Select
-									disabled={isLoading}
+									disabled={isSubmitting}
 									onValueChange={field.onChange}
 									value={field.value}
 									defaultValue={field.value}
@@ -120,7 +162,7 @@ export const FormRegister = () => {
 								<FormLabel>Descreva sua ocorrência</FormLabel>
 								<FormControl>
 									<Textarea
-										disabled={isLoading}
+										disabled={isSubmitting}
 										rows={7}
 										className="resize-none bg-background"
 										placeholder="Ex: Olá, gostaria de dizer que..."
@@ -138,7 +180,11 @@ export const FormRegister = () => {
 					/>
 
 					<div className="flex w-full justify-end">
-						<Button type="submit" aria-label="send a message">
+						<Button
+							disabled={isSubmitting}
+							type="submit"
+							aria-label="send a message"
+						>
 							Enviar mensagem
 							<Send className="ml-2 h-4 w-4" />
 						</Button>

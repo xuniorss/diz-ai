@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const OccurrenceSchema = z.object({
-	ocurrenceTypeId: z
+	occurrenceTypeId: z
 		.string()
 		.uuid()
 		.min(1, { message: 'Classificação é obrigatória.' }),
