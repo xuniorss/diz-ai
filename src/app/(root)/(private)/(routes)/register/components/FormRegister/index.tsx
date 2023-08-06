@@ -54,9 +54,22 @@ export const FormRegister = () => {
 		[form.formState.isSubmitting],
 	)
 
-	const handleCancelSendMessage = useCallback((occurrenceId: string) => {
-		console.log(occurrenceId)
-	}, [])
+	const handleCancelSendMessage = useCallback(
+		async (occurrenceId: string) => {
+			try {
+				await axios.delete(`/api/user/worker/occurrencies/${occurrenceId}`)
+
+				toast({ title: 'Ocorrência desfeita.' })
+			} catch (error) {
+				console.log(error)
+				toast({
+					title: 'Problema ao desfazer ocorrência.',
+					variant: 'destructive',
+				})
+			}
+		},
+		[toast],
+	)
 
 	const onSubmit: SubmitHandler<OccurrenceProps> = useCallback(
 		async (values) => {

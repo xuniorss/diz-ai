@@ -49,3 +49,31 @@ export const POST = async (req: Request) => {
 		return new NextResponse('Internal Server Error', { status: 500 })
 	}
 }
+
+export const GET = async (req: Request) => {
+	try {
+		const { userId } = auth()
+
+		if (!userId) return new NextResponse('Unauthorized', { status: 401 })
+
+		const user = await prismadb.user.findFirst({
+			where: { userId, isRh: true },
+		})
+
+		if (!user) return new NextResponse('User not found', { status: 404 })
+
+		const company = await prismadb.company.findFirst({ where: { userId } })
+
+		if (!company)
+			return new NextResponse('Company not found', { status: 404 })
+
+		const occurrencies = await prismadb.occurrencies.findMany({
+			where: { companyId: company.id, userId: user.userId },
+		})
+
+		return NextResponse.json(occurrencies)
+	} catch (error) {
+		console.error('[WORKER_OCCURRENCE_GET]', error)
+		return new NextResponse('Internal Server Error', { status: 500 })
+	}
+}
