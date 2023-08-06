@@ -30,6 +30,7 @@ import {
 } from '@/models/forms/occurrence-form'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Occurrencies } from '@prisma/client'
 import axios from 'axios'
 import { Send } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -79,7 +80,7 @@ export const FormRegister = () => {
 					...values,
 				}
 
-				const { data: response } = await axios.post(
+				const { data: response } = await axios.post<Occurrencies>(
 					'/api/user/worker/occurrencies',
 					data,
 				)
@@ -87,8 +88,6 @@ export const FormRegister = () => {
 				form.reset()
 				router.refresh()
 				setEnable(false)
-
-				console.log(response)
 
 				toast({
 					title: 'Ocorrência registrada.',
