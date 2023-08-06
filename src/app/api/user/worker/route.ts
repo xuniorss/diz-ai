@@ -58,3 +58,24 @@ export const POST = async (req: Request) => {
 		return new NextResponse('Internal Server Error', { status: 500 })
 	}
 }
+
+export const GET = async (req: Request) => {
+	try {
+		const { userId } = auth()
+
+		if (!userId) return new NextResponse('Unauthorized', { status: 401 })
+
+		const company = await prismadb.company.findFirst({ where: { userId } })
+
+		const workers = await prismadb.companyWorkers.findMany({
+			where: { companyId: company?.id },
+			include: { user: true },
+			orderBy: { createdAt: 'asc' },
+		})
+
+		return NextResponse.json(workers)
+	} catch (error) {
+		console.error('[WORKER_GET]', error)
+		return new NextResponse('Internal Server Error', { status: 500 })
+	}
+}
