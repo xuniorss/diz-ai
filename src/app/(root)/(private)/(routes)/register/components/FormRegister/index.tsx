@@ -175,15 +175,15 @@ export const FormRegister = () => {
 								<FormControl>
 									<Textarea
 										disabled={isSubmitting}
-										rows={7}
+										rows={15}
 										className="resize-none bg-background"
 										placeholder="Ex: Olá, gostaria de dizer que..."
-										maxLength={300}
+										maxLength={2000}
 										{...field}
 									/>
 								</FormControl>
 								<FormDescription>
-									Sua mensagem deve ter no máximo 300 caracteres.
+									Sua mensagem deve ter no máximo 2000 caracteres.
 									Lembre-se de ser educado(a).
 								</FormDescription>
 								<FormMessage />
