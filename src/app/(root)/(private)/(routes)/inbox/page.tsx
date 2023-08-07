@@ -1,15 +1,19 @@
-'use client'
-
-import { getWorkerOccurrenceFetch } from '@/redux/occurrencies/slice'
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { Container } from '@/components/Container'
+import { HeaderPages } from '@/components/HeaderPages'
+import { Separator } from '@/components/ui/separator'
+import { Filters } from './components/Filters'
 
 export default function InboxPage() {
-	const dispatch = useDispatch()
-
-	useEffect(() => {
-		dispatch(getWorkerOccurrenceFetch())
-	}, [dispatch])
-
-	return <div></div>
+	return (
+		<Container>
+			<HeaderPages
+				title="Inbox"
+				subtitle="Todas as mensagens enviadas por seus colaboradores encontra-se aqui."
+			/>
+			<Separator className="bg-primary/30" />
+			<section>
+				<Filters />
+			</section>
+		</Container>
+	)
 }

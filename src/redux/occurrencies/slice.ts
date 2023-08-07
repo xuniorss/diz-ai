@@ -6,12 +6,14 @@ interface OccurrenciesState {
 	occurrencies: OccurrenceResponseProps[] | null
 	isLoading: boolean
 	workerOccurrence: Occurrencies[] | null
+	occurrenceTypeId: string | null
 }
 
 const initialState: OccurrenciesState = {
 	occurrencies: null,
 	isLoading: false,
 	workerOccurrence: null,
+	occurrenceTypeId: null,
 }
 
 const occurrenciesSlice = createSlice({
@@ -44,6 +46,19 @@ const occurrenciesSlice = createSlice({
 		getWorkerOccurrenceFailure: (state) => {
 			state.isLoading = false
 		},
+		filterWorkerOccurrence: (state, action: PayloadAction<string>) => {
+			state.isLoading = true
+			state.occurrenceTypeId = action.payload
+			state.workerOccurrence = [
+				...(state.workerOccurrence?.filter(
+					(workerOcc) => workerOcc.occurrenceTypeId === action.payload,
+				) as Occurrencies[]),
+			]
+			state.isLoading = false
+		},
+		resetFilterWorkerOccurrence: (state) => {
+			state.occurrenceTypeId = null
+		},
 	},
 })
 
@@ -54,6 +69,8 @@ export const {
 	getWorkerOccurrenceFetch,
 	getWorkerOccurrenceSuccess,
 	getWorkerOccurrenceFailure,
+	filterWorkerOccurrence,
+	resetFilterWorkerOccurrence,
 } = occurrenciesSlice.actions
 
 export default occurrenciesSlice.reducer
