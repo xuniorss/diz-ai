@@ -6,6 +6,7 @@ interface OccurrenciesState {
 	occurrencies: OccurrenceResponseProps[] | null
 	isLoading: boolean
 	workerOccurrence: Occurrencies[] | null
+	workerOccurrenceCopy: Occurrencies[] | null
 	occurrenceTypeId: string | null
 }
 
@@ -14,6 +15,7 @@ const initialState: OccurrenciesState = {
 	isLoading: false,
 	workerOccurrence: null,
 	occurrenceTypeId: null,
+	workerOccurrenceCopy: null,
 }
 
 const occurrenciesSlice = createSlice({
@@ -41,6 +43,7 @@ const occurrenciesSlice = createSlice({
 			action: PayloadAction<Occurrencies[]>,
 		) => {
 			state.workerOccurrence = [...action.payload]
+			state.workerOccurrenceCopy = [...action.payload]
 			state.isLoading = false
 		},
 		getWorkerOccurrenceFailure: (state) => {
@@ -49,11 +52,17 @@ const occurrenciesSlice = createSlice({
 		filterWorkerOccurrence: (state, action: PayloadAction<string>) => {
 			state.isLoading = true
 			state.occurrenceTypeId = action.payload
-			state.workerOccurrence = [
-				...(state.workerOccurrence?.filter(
-					(workerOcc) => workerOcc.occurrenceTypeId === action.payload,
-				) as Occurrencies[]),
-			]
+
+			const copiedArray = [...(state.workerOccurrenceCopy as Occurrencies[])]
+
+			const filtered = copiedArray.filter(
+				(typeId) => typeId.occurrenceTypeId === action.payload,
+			)
+
+			state.workerOccurrence = action.payload
+				? filtered
+				: state.workerOccurrence
+
 			state.isLoading = false
 		},
 		resetFilterWorkerOccurrence: (state) => {

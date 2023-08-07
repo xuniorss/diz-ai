@@ -68,7 +68,7 @@ export const GET = async (req: Request) => {
 			return new NextResponse('Company not found', { status: 404 })
 
 		const occurrencies = await prismadb.occurrencies.findMany({
-			where: { companyId: company.id },
+			where: { companyId: company.id, read: false },
 		})
 
 		return NextResponse.json(occurrencies)

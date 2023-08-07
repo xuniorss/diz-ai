@@ -25,7 +25,7 @@ export const Filters = () => {
 
 	const dispatch = useDispatch()
 
-	const { occurrencies, filterActived } = useStoreOccurrence()
+	const { occurrencies, filterActived, isLoading } = useStoreOccurrence()
 
 	useEffect(() => {
 		dispatch(getWorkerOccurrenceFetch())
@@ -54,6 +54,8 @@ export const Filters = () => {
 				<ButtonFilter
 					onClick={handleResetFilter}
 					size="sm"
+					className="select-none"
+					disabled={isLoading}
 					bgColor={!filterActived ? 'active' : 'default'}
 				>
 					Todos
@@ -64,6 +66,8 @@ export const Filters = () => {
 						key={occ.id}
 						onClick={() => handleFilter(occ.id)}
 						size="sm"
+						className="select-none"
+						disabled={isLoading}
 						bgColor={filterActived === occ.id ? 'active' : 'default'}
 					>
 						{occ.name}
@@ -88,8 +92,9 @@ export const Filters = () => {
 								<DropdownMenuItem key={occ.id} className="w-full">
 									<Button
 										size="sm"
+										disabled={isLoading}
 										onClick={() => handleFilter(occ.id)}
-										className="w-full"
+										className="w-full select-none"
 										variant="outline"
 									>
 										{occ.name}

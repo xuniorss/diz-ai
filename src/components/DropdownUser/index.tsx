@@ -1,9 +1,9 @@
 'use client'
 
+import { resetFilterWorkerOccurrence } from '@/redux/occurrencies/slice'
 import { clearUser, setTypeProfile } from '@/redux/user/slice'
 import { useClerk } from '@clerk/nextjs'
 import { LogOut, User, UserCircle2 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { Button } from '../ui/button'
@@ -20,12 +20,12 @@ import {
 export const DropdownUser = () => {
 	const { signOut } = useClerk()
 	const dispatch = useDispatch()
-	const router = useRouter()
 
 	const handleLogout = useCallback(() => {
 		signOut()
 		dispatch(clearUser())
 		dispatch(setTypeProfile(null))
+		dispatch(resetFilterWorkerOccurrence())
 
 		return (window.location.href = '/')
 	}, [dispatch, signOut])

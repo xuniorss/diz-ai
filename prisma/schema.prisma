@@ -89,6 +89,7 @@ model Occurrencies {
   companyId        String
   message          String  @db.Text
   occurrenceTypeId String
+  read             Boolean @default(false)
 
   occurrenciesTypes OccurrenciesTypes @relation(fields: [occurrenceTypeId], references: [id], onDelete: Cascade)
   user              User              @relation(fields: [userId], references: [userId], onDelete: Cascade)

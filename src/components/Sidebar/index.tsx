@@ -1,16 +1,19 @@
 'use client'
 
 import { rhRoutes, workRoutes } from '@/constants/navigation'
+import { useStoreOccurrence } from '@/hooks/useStoreOccurrence'
 import { useStoreUser } from '@/hooks/useStoreUser'
 import { cn } from '@/lib/utils'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useMemo } from 'react'
+import { Badge } from '../ui/badge'
 
 export const Sidebar = () => {
 	const pathname = usePathname()
 	const router = useRouter()
 
 	const { user } = useStoreUser()
+	const { occurrenceNotReadCount } = useStoreOccurrence()
 
 	const onNavigate = useCallback(
 		(url: string) => {
@@ -50,7 +53,12 @@ export const Sidebar = () => {
 						>
 							<div className="flex flex-1 flex-col items-center gap-y-2">
 								<route.icon className="h-5 w-5" />
-								{route.label}
+								<p>{route.label}</p>
+								{route.hasNotifications && (
+									<Badge variant="outline">
+										{occurrenceNotReadCount}
+									</Badge>
+								)}
 							</div>
 						</div>
 					))}

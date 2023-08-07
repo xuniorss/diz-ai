@@ -4,4 +4,5 @@ export type RoutesProps = {
 	icon: LucideIcon
 	href: string
 	label: string
+	hasNotifications?: boolean
 }

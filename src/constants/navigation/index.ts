@@ -3,7 +3,7 @@ import { Home, Inbox, Key, MailPlus, Users } from 'lucide-react'
 
 export const rhRoutes: RoutesProps[] = [
 	{ icon: Home, href: '/home', label: 'Início' },
-	{ icon: Inbox, href: '/inbox', label: 'Inbox' },
+	{ icon: Inbox, href: '/inbox', label: 'Inbox', hasNotifications: true },
 	{ icon: Users, href: '/workers', label: 'Pessoas' },
 	{ icon: Key, href: '/keys', label: 'Chaves' },
 ]
