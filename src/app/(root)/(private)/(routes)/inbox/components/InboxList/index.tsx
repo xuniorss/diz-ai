@@ -20,7 +20,7 @@ export const InboxList = () => {
 					workerOccurrencies?.map((workerOcc) => (
 						<Skeleton
 							key={workerOcc.id}
-							className="rounded-md bg-background/80 p-3 shadow-md"
+							className="rounded-md bg-background/80 p-3 shadow-md hover:bg-background/60"
 						/>
 					))}
 
@@ -29,7 +29,7 @@ export const InboxList = () => {
 						<Link
 							key={workerOcc.id}
 							href={`/inbox/${workerOcc.id}`}
-							className="rounded-md bg-background/80 p-3 leading-relaxed shadow-md"
+							className="rounded-md bg-background/80 p-3 leading-relaxed shadow-md transition-colors hover:bg-background/60"
 						>
 							<p className="truncate">
 								<b>Mensagem:</b> {workerOcc.message}
